@@ -17,12 +17,11 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
-    - run:
+    - run: |
         npm i
         pm2 stop 0
         pm2 start 0
         pm2 save 
-        sudo service nginx restart
 
 
       
