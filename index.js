@@ -21,7 +21,7 @@ app.use('/api/products',productRouter);
 app.use('/api/cart',cartRouter);
 app.use('/api/review',reviewRouter);
 app.get('/',(req,res)=>{
-    res.send("Welcome to ecommerce api from binod");
+    res.send("Welcome to ecommerce api from binod,pravin");
 })
 app.listen(process.env.PORT,()=>{
     console.log(`server is listining on port${process.env.PORT}`)
