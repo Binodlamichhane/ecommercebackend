@@ -21,7 +21,6 @@ const userSchema =new Schema({
         minlength:10,
         maxlength:12,
         unique:true,
-        required:true
     },
     profileImg:{
         type:String,

@@ -4,15 +4,19 @@ import uploadCloudinary,{deleteCloudinary} from '../utility/cloudinary.js'
 
 export const userSignup =async(req,res)=>{
     try{
-        if(req.file){
-            const {profileImg,img_Id}= await uploadCloudinary(req.file.path);
-            console.log('requestbody',req.body);
-            // var {firstname,lastname,email,phoneno,password}=req.body;
-                // var user= await User.create({firstname,lastname,email,phoneno,password,profileImg,img_Id});
-                var user= await User.create({...req.body,profileImg,img_Id});
+        const {password,confirmPassword}=req.body;
+        if(password==confirmPassword){
+            if(req.file){
+                const {profileImg,img_Id}= await uploadCloudinary(req.file.path);
+                console.log('requestbody',req.body);
+                    var user= await User.create({...req.body,profileImg,img_Id});
+            }else{
+                var user= await User.create(req.body);
+            }
         }else{
-            var user= await User.create(req.body);
+            throw new Error('password mismatch');
         }
+       
      const token= user.generateToken();
      console.log('token',token);
      res.status(201).json({
