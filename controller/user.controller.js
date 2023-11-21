@@ -11,7 +11,7 @@ export const userSignup =async(req,res)=>{
                 console.log('requestbody',req.body);
                     var user= await User.create({...req.body,profileImg,img_Id});
             }else{
-                var user= await User.create(req.body);
+                var user= await User.create({...req.body});
             }
         }else{
             throw new Error('password mismatch');
