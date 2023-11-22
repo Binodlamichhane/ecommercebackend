@@ -33,7 +33,7 @@ export const userSignup =async(req,res)=>{
 export const userLogin =async(req,res)=>{
     try{
     const {email,password}=req.body;
-    const user= await User.findOne({email})
+    const user= await User.findOne({email},)
      if(user.comparePassword(password)){
         const token=user.generateToken();
         res.status(200).json({
@@ -90,11 +90,20 @@ export const deleteUser=async(req,res)=>{
     }
 }
 export const getUser=async(req,res)=>{
-    const response=await User.find().select("-password")
-    res.json({
-        status:'success',
-        data:response
-    })
+    try{
+        const response=await User.find({_id:req.id}).select("-password")
+        res.status(200).json({
+            status:'success',
+            data:response
+        })
+    }catch(error){
+        res.status(401).json({
+            sataus:'failed',
+            message:'user cannot be found',
+            error:error,
+        })
+    }
+   
 }
 
 
