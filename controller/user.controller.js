@@ -16,13 +16,12 @@ export const userSignup =async(req,res)=>{
         }else{
             throw new Error('password mismatch');
         }
-       
+    const datatosend={"_id":user._id,"firstname":user.firstname,"lastname":user.lastname,"email":user.email}
      const token= user.generateToken();
-     console.log('token',token);
      res.status(201).json({
         status:"success",
         token:token,
-        data:user
+        data:datatosend,
      })
     }catch(error){
         res.json({
@@ -33,12 +32,14 @@ export const userSignup =async(req,res)=>{
 export const userLogin =async(req,res)=>{
     try{
     const {email,password}=req.body;
-    const user= await User.findOne({email},)
+    const user= await User.findOne({email});
      if(user.comparePassword(password)){
         const token=user.generateToken();
+        const datatosend={"_id":user._id,"firstname":user.firstname,"lastname":user.lastname,"email":user.email}
         res.status(200).json({
             message:"login success",
-            token:token
+            token:token,
+            data:datatosend
         });
      }else{
         res.status(403).json({
