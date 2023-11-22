@@ -20,7 +20,6 @@ const userSchema =new Schema({
         type:String,
         minlength:10,
         maxlength:12,
-        unique:true,
         sparse:true,
     },
     profileImg:{
