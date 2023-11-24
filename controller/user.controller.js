@@ -36,7 +36,8 @@ export const userLogin =async(req,res)=>{
     try{
     const {email,password}=req.body;
     var user= await User.findOne({email});
-     if(user.comparePassword(password)){
+    const login= await user.comparePassword(password)
+     if(login){
         const token=user.generateToken();
         const datatosend={"_id":user._id,"firstname":user.firstname,"lastname":user.lastname,"email":user.email}
         res.status(200).json({

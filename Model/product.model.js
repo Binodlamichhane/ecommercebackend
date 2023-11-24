@@ -10,7 +10,6 @@ const productSchema=new Schema({
     },
     category:{
         type:String,
-        enum:["phone","electronic","watch","laptop","sports","clothes","furniters",'untils'],
         required:true,
     },
     stock:{
@@ -29,7 +28,7 @@ const productSchema=new Schema({
         type:String,
         enum:['new','refurbised','used']
     },
-    img_id:{
+    img_Id:{
         type:String,
     },
     user_id:{

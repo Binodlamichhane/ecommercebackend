@@ -2,6 +2,7 @@ import express from 'express';
 import {upload} from '../middleware/multer.middleware.js'
 import {getAllProduct,getMyProduct, addProduct,updateProduct,deleteProduct,getproductid} from  '../controller/product.controller.js'
 import {verifytoken} from '../middleware/verifytoken.js'
+import { addCategories ,getCategories} from '../controller/categories.controller.js';
 const router=express.Router();
 router
 .route('/')
@@ -16,5 +17,9 @@ router
 router
 .route('/myproduct/id')
 .get(getproductid)
+router
 
+.route('/categories')
+.post(upload.single('myfile'),addCategories)
+.get(getCategories);
 export default router;
