@@ -34,7 +34,7 @@ export const userSignup =async(req,res)=>{
 export const userLogin =async(req,res)=>{
     try{
     const {email,password}=req.body;
-    const user= await User.findOne({email});
+    var user= await User.findOne({email});
      if(user.comparePassword(password)){
         const token=user.generateToken();
         const datatosend={"_id":user._id,"firstname":user.firstname,"lastname":user.lastname,"email":user.email}
@@ -65,7 +65,7 @@ export const uploadImage=async(req,res)=>{
 export const updateUser=async(req,res)=>{
     try{
         console.log(req.body);
-    const {email,firstname}=req.body;
+    const {email}=req.body;
     const response= await User.findOneAndUpdate({email:email},{$set:req.body},{new:true})
      res.json({
         status:"successfully updated",
@@ -148,16 +148,18 @@ export const forgetPass=async(req,res)=>{
 
 export const verifyuser=async(req,res)=>{
     try{
-    const{opt,id}=req.body;
-    const user=await Otpmodals.findOne({_id:id});
-    if(user.opt==opt){
-        const token=user.generateToken();
+    const{id,otp}=req.body;
+    console.log(otp,id);
+    var otpdata=await Otpmodals.findOne({userId:id});
+    console.log('user',otpdata.otp);
+    console.log('otp',otp);
+    if(otpdata.otp==otp){
+        console.log('binod');
         res.status(200).json({
             message:"login success",
-            token:token,
         });
     }else{
-        res.status(401).json({
+        res.status(404).json({
             status:'failed',
             message:'wrong opt'
         })
