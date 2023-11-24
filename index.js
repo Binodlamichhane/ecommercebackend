@@ -16,7 +16,7 @@ app.use(express.json());
 
 
 //routes
-app.use('/api/users',userRouter);
+app.use('/api/user',userRouter);
 app.use('/api/product',productRouter);
 app.use('/api/cart',cartRouter);
 app.use('/api/review',reviewRouter);

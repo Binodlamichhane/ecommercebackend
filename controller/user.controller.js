@@ -1,5 +1,7 @@
 
 import User from '../Model/user.model.js';
+import Otpmodals from '../Model/otp.model.js';
+import sendEmail from '../middleware/nodemailer.js';
 import uploadCloudinary,{deleteCloudinary} from '../utility/cloudinary.js'
 
 export const userSignup =async(req,res)=>{
@@ -64,7 +66,7 @@ export const updateUser=async(req,res)=>{
     try{
         console.log(req.body);
     const {email,firstname}=req.body;
-   const response= await User.findOneAndUpdate({email:email},{$set:req.body},{new:true})
+    const response= await User.findOneAndUpdate({email:email},{$set:req.body},{new:true})
      res.json({
         status:"successfully updated",
         data:response,
@@ -107,5 +109,68 @@ export const getUser=async(req,res)=>{
    
 }
 
+export const forgetPass=async(req,res)=>{
+    try{
+ const user= await User.findOne({email:req.body.email},'-password');
+ console.log('user data',user);
+ if(user){
+    const data={
+        userId:user._id,
+        otp:Math.trunc(Math.random()*100000),
+        expireAt:Date.now()
+    }
+    const response = await Otpmodals.create(data);
+
+     const emailresult=await sendEmail({
+        email:req.body.email,
+        subject:'resetPassword',
+        message:`this email is auto generated donot reply and your passcode is ${response.otp}`
+    })
+    console.log('emil result',emailresult);
+    res.status(200).json({
+        status:'success',
+        message:'otp sent to your email',
+        data:user
+    })
+ }else{
+    res.status(400).json({
+        status:'failed',
+        message:'no such user'
+    })
+ }
+}catch(error){
+    res.status(401).json({
+        status:'failed',
+        error:error,
+    })
+}
+}
+
+export const verifyuser=async(req,res)=>{
+    try{
+    const{opt,id}=req.body;
+    const user=await Otpmodals.findOne({_id:id});
+    if(user.opt==opt){
+        const token=user.generateToken();
+        res.status(200).json({
+            message:"login success",
+            token:token,
+        });
+    }else{
+        res.status(401).json({
+            status:'failed',
+            message:'wrong opt'
+        })
+    }
+}catch(error){
+    res.status(500).json({
+        status:'failed',
+        message:'server error',
+        error:error
+
+    })
+}
+
+}
 
 

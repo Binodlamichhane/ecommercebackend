@@ -1,5 +1,5 @@
 import express from 'express';
-import{getUser,updateUser,deleteUser,userSignup,userLogin,uploadImage} from '../controller/user.controller.js';
+import{getUser,updateUser,deleteUser,userSignup,userLogin,uploadImage,forgetPass,verifyuser} from '../controller/user.controller.js';
 import {upload} from '../middleware/multer.middleware.js'
 import { verifytoken } from '../middleware/verifytoken.js';
 const router =express.Router();
@@ -19,5 +19,7 @@ router
 
 router.route('/profile')
 .post(upload.single('myfile'),uploadImage)
+router.post('/forgetPassword',forgetPass)
+router.post('/verifyPassword',verifyuser)
 
 export default router;
