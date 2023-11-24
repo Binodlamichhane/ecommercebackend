@@ -5,8 +5,8 @@ import { verifytoken } from '../middleware/verifytoken.js';
 const router =express.Router();
 router
 .route('/')
+.patch(updateUser)
 .get(verifytoken,getUser)
-.patch(verifytoken,updateUser)
 .delete(verifytoken,deleteUser)
 
 router

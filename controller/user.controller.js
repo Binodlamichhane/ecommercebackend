@@ -3,6 +3,7 @@ import User from '../Model/user.model.js';
 import Otpmodals from '../Model/otp.model.js';
 import sendEmail from '../middleware/nodemailer.js';
 import uploadCloudinary,{deleteCloudinary} from '../utility/cloudinary.js'
+import bcrypt from 'bcrypt';
 
 export const userSignup =async(req,res)=>{
     try{
@@ -64,8 +65,12 @@ export const uploadImage=async(req,res)=>{
 }
 export const updateUser=async(req,res)=>{
     try{
-        console.log(req.body);
     const {email}=req.body;
+    if(req.body.password){ 
+        const {password}=req.body;
+        const hashedPassword=await bcrypt.hash(password,10);
+        req.body.password=hashedPassword;
+    }
     const response= await User.findOneAndUpdate({email:email},{$set:req.body},{new:true})
      res.json({
         status:"successfully updated",
