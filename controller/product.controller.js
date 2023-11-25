@@ -33,7 +33,7 @@ export const addProduct=async(req,res)=>{
     const {profileImg,img_Id}= await uploadCloudinary(req.file.path)
     const response= await Product.create({...req.body,productImg:profileImg,img_Id})
     console.log('req.filepath',req.file.path);
-    fs.unlink(req.file.path,(error)=>{console.log('file status',error)});
+        fs.unlink(req.file.path,(error)=>{throw new Error('file unlinkin failed')});
     res.json({
         status:"success",
         data:response
