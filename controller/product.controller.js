@@ -2,6 +2,7 @@ import Product from "../Model/product.model.js";
 import Review from "../Model/review.model.js";
 import fs from 'fs';
 import uploadCloudinary, { deleteCloudinary } from "../utility/cloudinary.js";
+import ProductDetails from "../Model/carousel.js";
 export const getAllProduct=async(req,res)=>{
     try{
     const response=await Product.find();
@@ -33,7 +34,7 @@ export const addProduct=async(req,res)=>{
     const {profileImg,img_Id}= await uploadCloudinary(req.file.path)
     const response= await Product.create({...req.body,productImg:profileImg,img_Id})
     console.log('req.filepath',req.file.path);
-        fs.unlink(req.file.path,(error)=>{throw new Error('file unlinkin failed')});
+        fs.unlink(req.file.path,(error)=>{console.log('here is error',error)});
     res.json({
         status:"success",
         data:response
@@ -44,6 +45,19 @@ export const addProduct=async(req,res)=>{
         })
     }
 }
+export const addProductDetails=async(req,res)=>{
+    try{
+        const{profileImg,img_Id}=await uploadCloudinary(req.file.path)
+        res.status(200).json({
+            status:'success'
+        })
+    }catch{
+        res.status(400).json({
+            status:'failed'
+        })
+    }
+}
+
 export const updateProduct=async(req,res)=>{
     try{
     const response= await Product.findOneAndUpdate({_id:req.params.id},req.body,{new:true})

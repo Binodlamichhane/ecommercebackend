@@ -22,4 +22,6 @@ router
 .route('/categories')
 .post(upload.single('myfile'),addCategories)
 .get(getCategories);
+
+router.route('/productDetails').post(upload.array())
 export default router;
