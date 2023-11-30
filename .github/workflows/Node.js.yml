@@ -22,7 +22,7 @@ jobs:
         npm i
         touch .env
         echo "${{ secrets.ENV_FILE }}" > .env
-        pm2 restart
+        
         
         
 
